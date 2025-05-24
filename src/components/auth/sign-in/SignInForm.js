@@ -20,12 +20,13 @@ import {
 } from "@mui/material";
 import CustomPhoneInputManual from "components/custom-component/CustomPhoneInputManual";
 import { checkInput } from "utils/CustomFunctions";
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+
 import { CustomTypography } from "components/landing-page/hero-section/HeroSection.style";
 import LoadingButton from "@mui/lab/LoadingButton";
-import SocialLogins from "components/auth/sign-in/social-login/SocialLogins";
-import Link from "next/link";
+
 import PhoneOrEmailIcon from "components/auth/asset/PhoneOrEmailIcon";
+import { useDispatch } from "react-redux";
+import { setOpenForgotPasswordModal } from "redux/slices/utils";
 
 const SignInForm = ({
   loginFormik,
@@ -38,11 +39,13 @@ const SignInForm = ({
   handleSignUp,
   only,
   handleClick,
+  handleClose
 }) => {
   const lanDirection = getLanguage() ? getLanguage() : "ltr";
   const theme = useTheme();
   const textColor = theme.palette.whiteContainer.main;
   const [isPhone, setIsPhone] = useState("");
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const value = loginFormik.values.email_or_phone;
@@ -147,7 +150,10 @@ const SignInForm = ({
               }
             />
             <CustomLink
-              href="/forgot-password"
+             onClick={()=>{
+              dispatch(setOpenForgotPasswordModal(true))
+              handleClose()
+             }}
               sx={{ fontWeight: "400", fontSize: "14px" }}
             >
               {t("Forgot password?")}
@@ -196,21 +202,7 @@ const SignInForm = ({
             >
               {t("Sign In")}
             </LoadingButton>
-            {/*{configData?.social_login?.length > 0 &&*/}
-            {/*  configData?.social_login?.some(*/}
-            {/*    (item) => item.status === true*/}
-            {/*  ) && (*/}
-            {/*    <CustomStackFullWidth*/}
-            {/*      alignItems="center"*/}
-            {/*      justifyContent="center"*/}
-            {/*      spacing={1}*/}
-            {/*    >*/}
-            {/*      <CustomTypographyGray nodefaultfont="true">*/}
-            {/*        {t("Or")}*/}
-            {/*      </CustomTypographyGray>*/}
-            {/*      <CustomTypography>{t("Login with")}</CustomTypography>*/}
-            {/*    </CustomStackFullWidth>*/}
-            {/*  )}*/}
+
             {only && (
               <CustomStackFullWidth alignItems="center" spacing={0.5}>
                 <CustomStackFullWidth

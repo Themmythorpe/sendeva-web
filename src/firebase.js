@@ -7,13 +7,13 @@ import {
 } from "firebase/messaging";
 import { getAuth } from "firebase/auth";
 const firebaseConfig = {
-  apiKey: "AIzaSyCBXUbUerHO1zJ9jkObim-WVzodUjqCMEE",
-  authDomain: "sendeva-633cd.firebaseapp.com",
-  projectId: "sendeva-633cd",
-  storageBucket: "sendeva-633cd.firebasestorage.app",
-  messagingSenderId: "1065391601456",
-  appId: "1:1065391601456:web:7fe380cf9a633e9129faf5",
-  measurementId: "G-6M0R8CMFRN"
+  apiKey: "AIzaSyD0Z911mOoWCVkeGdjhIKwWFPRgvd6ZyAw",
+  authDomain: "stackmart-500c7.firebaseapp.com",
+  projectId: "stackmart-500c7",
+  storageBucket: "stackmart-500c7.appspot.com",
+  messagingSenderId: "491987943015",
+  appId: "1:491987943015:web:d8bc7ab8dbc9991c8f1ec2",
+  measurementId: "",
 };
 const firebaseApp = !getApps().length
   ? initializeApp(firebaseConfig)
@@ -32,7 +32,8 @@ const messaging = (async () => {
 
 export const fetchToken = async (setTokenFound, setFcmToken) => {
   return getToken(await messaging, {
-    vapidKey: "",
+    vapidKey:
+      "BIYqKZ2ZlXRJYZX_iU7oYymqHZ1B0d8MVsYMoEPX_eFtezlxZ_V4JooCxS8ks857ylCVLewTtgHFxc6I8iBi7h4",
   })
     .then((currentToken) => {
       if (currentToken) {

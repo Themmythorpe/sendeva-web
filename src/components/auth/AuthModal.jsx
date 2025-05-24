@@ -1,14 +1,12 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import CustomModal from "components/modal";
-import { Typography } from "@mui/material";
 import SignIn from "components/auth/sign-in";
 import SignUp from "components/auth/sign-up/SignUp";
 import AddUserInfo from "components/auth/AddUserInfo";
 import ExitingUser from "components/auth/ExitingUser";
 import { useTheme } from "@mui/styles";
 import { useSignIn } from "api-manage/hooks/react-query/auth/useSignIn";
-import CustomToaster from "components/custom-toaster/CustomToaster";
 import {
   onErrorResponse,
   onSingleErrorResponse,
@@ -26,6 +24,9 @@ import { auth } from "firebase";
 import PhoneInputForm from "components/auth/sign-in/social-login/PhoneInputForm";
 import { toast } from "react-hot-toast";
 import { t } from "i18next";
+import { getCurrentModuleType } from "helper-functions/getCurrentModuleType";
+import { useGetWishList } from "api-manage/hooks/react-query/rental-wishlist/useGetWishlist";
+
 export const setUpRecaptcha = () => {
   if (document.getElementById("recaptcha-container")) {
     if (!window.recaptchaVerifier) {
@@ -34,7 +35,7 @@ export const setUpRecaptcha = () => {
         {
           size: "invisible",
           callback: (response) => {
-            console.log("Recaptcha verified", response);
+            // console.log("Recaptcha verified", response);
           },
           "expired-callback": () => {
             window.recaptchaVerifier?.reset();
@@ -45,7 +46,6 @@ export const setUpRecaptcha = () => {
     } else {
       window.recaptchaVerifier.clear();
       window.recaptchaVerifier = null;
-      // setUpRecaptcha()
     }
   }
 };
@@ -58,8 +58,6 @@ const AuthModal = ({ modalFor, open, handleClose, setModalFor }) => {
   const { userInfo: fbUserInfo, jwtToken: fbJwtToken } = useSelector(
     (state) => state.fbCredentialsStore
   );
-
-  const [signInPage, setSignInPage] = useState(true);
   const [jwtToken, setJwtToken] = useState(null);
   const [medium, setMedium] = useState("");
   const [verificationId, setVerificationId] = useState(null);
@@ -72,6 +70,7 @@ const AuthModal = ({ modalFor, open, handleClose, setModalFor }) => {
   const userOnSuccessHandler = (res) => {
     dispatch(setUser(res?.data));
   };
+
   const { refetch: profileRefatch } = useQuery(
     ["profile-info"],
     ProfileApi.profileInfo,
@@ -82,6 +81,8 @@ const AuthModal = ({ modalFor, open, handleClose, setModalFor }) => {
     }
   );
   let zoneid = undefined;
+  const moduleType = getCurrentModuleType();
+
   if (typeof window !== "undefined") {
     zoneid = localStorage.getItem("zoneid");
   }
@@ -89,20 +90,22 @@ const AuthModal = ({ modalFor, open, handleClose, setModalFor }) => {
     dispatch(setWishList(res));
   };
   const { refetch } = useWishListGet(onSuccessHandler);
+  const { refetch: rentalWishlistRefetch } = useGetWishList(onSuccessHandler);
+
   const handleSuccess = async (value) => {
     localStorage.setItem("token", value);
     toast.success(t(loginSuccessFull));
-    // CustomToaster("success", loginSuccessFull);
     if (zoneid) {
-      await refetch();
+      if (moduleType === "rental") {
+        await rentalWishlistRefetch();
+      } else {
+        await refetch();
+      }
     }
     await profileRefatch();
-    //dispatch(setToken(value));
     handleClose?.();
   };
   const handleRegistrationOnSuccess = (token) => {
-    //registration on success func remaining
-    // setOpenModal(false)
     handleSuccess(token).then();
     handleClose();
   };
@@ -177,10 +180,9 @@ const AuthModal = ({ modalFor, open, handleClose, setModalFor }) => {
         setMainToken(response);
       })
       .catch((error) => {
-        console.log("Error in sending OTP", error);
+        // console.log("Error in sending OTP", error);
       });
   };
-  console.log({ modalFor });
   const renderModalContent = () => {
     switch (modalFor) {
       case "sign-in":

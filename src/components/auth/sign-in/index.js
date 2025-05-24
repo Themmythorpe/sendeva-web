@@ -1,40 +1,25 @@
-import {
-  Checkbox,
-  FormControlLabel,
-  IconButton,
-  NoSsr,
-  styled,
-  Typography,
-  useTheme,
-} from "@mui/material";
+import { IconButton, NoSsr, styled, Typography, useTheme } from "@mui/material";
 import { Box, Stack } from "@mui/system";
 import React, { useEffect, useReducer, useState } from "react";
-import {
-  CustomPaperBigCard,
-  CustomStackFullWidth,
-  CustomTypographyGray,
-} from "styled-components/CustomStyles.style";
+import { CustomStackFullWidth } from "styled-components/CustomStyles.style";
 
 import { t } from "i18next";
 import { CustomTypography } from "../../landing-page/hero-section/HeroSection.style";
 import SignInForm from "./SignInForm";
-// import AcceptTermsAndConditions from "../../../../pages/auth/AcceptTermsAndConditions";
-import LoadingButton from "@mui/lab/LoadingButton";
 import {
   onErrorResponse,
   onSingleErrorResponse,
 } from "api-manage/api-error-response/ErrorResponses";
-import { useSignIn } from "api-manage/hooks/react-query/auth/useSignIn";
+
 import { useFireBaseOtpVerify } from "api-manage/hooks/react-query/forgot-password/useFIreBaseOtpVerify";
 import { useVerifyPhone } from "api-manage/hooks/react-query/forgot-password/useVerifyPhone";
 import { useWishListGet } from "api-manage/hooks/react-query/wish-list/useWishListGet";
-import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
+
 import { useFormik } from "formik";
 import { getGuestId } from "helper-functions/getToken";
-import Link from "next/link";
 import { useRouter } from "next/router";
 import toast from "react-hot-toast";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setCartList } from "redux/slices/cart";
 import { setUser } from "redux/slices/profileInfo";
 import { setWishList } from "redux/slices/wishList";
@@ -50,13 +35,11 @@ import {
 } from "utils/toasterMessages";
 import useGetAllCartList from "../../../api-manage/hooks/react-query/add-cart/useGetAllCartList";
 import useGetProfile from "../../../api-manage/hooks/react-query/profile/useGetProfile";
-import { auth } from "../../../firebase"; // Import the Firebase auth instance
 import { getSelectedVariations } from "../../header/second-navbar/SecondNavbar";
 import { ModuleSelection } from "../../landing-page/hero-section/module-selection";
 import CustomModal from "../../modal";
 import AuthHeader from "../AuthHeader";
 import OtpForm from "../sign-up/OtpForm";
-import SignUpValidation from "./SignInValidation";
 import SocialLogins from "./social-login/SocialLogins";
 import {
   ACTIONS,
@@ -69,15 +52,13 @@ import {
 } from "components/auth/sign-in/loginHepler";
 import OtpLogin from "components/auth/sign-in/OtpLogin";
 import * as Yup from "yup";
-import SignUp from "../sign-up/SignUp";
-import configData from "redux/slices/configData";
-import CloseIcon from "@mui/icons-material/Close";
 
-const CustomLink = styled(Link)(({ theme }) => ({
-  "&:hover": {
-    color: theme.palette.primary.main,
-  },
-}));
+import CloseIcon from "@mui/icons-material/Close";
+import { getCurrentModuleType } from "helper-functions/getCurrentModuleType";
+import useGetBookingList from "api-manage/hooks/react-query/useGetBookingList";
+import { useGetWishList } from "api-manage/hooks/react-query/rental-wishlist/useGetWishlist";
+import ForgotPassword from "../ForgotPassword/ForgotPassword";
+import { setOpenForgotPasswordModal } from "redux/slices/utils";
 
 const SignIn = ({
   modalFor,
@@ -97,6 +78,7 @@ const SignIn = ({
 }) => {
   const router = useRouter();
   const previousRouteName = router.query.from;
+  const { openForgotPasswordModal } = useSelector((state) => state.utilsData);
   const guestId = getGuestId();
   const dispatch = useDispatch();
   const [openModuleSelection, setOpenModuleSelection] = useState(false);
@@ -107,19 +89,17 @@ const SignIn = ({
   const [isApiCalling, setIsApiCalling] = useState(false);
   const [isRemember, setIsRemember] = useState(false);
   const theme = useTheme();
-  const [openSignUp, setOpenSignUp] = useState(false);
+
   const [state, loginDispatch] = useReducer(loginReducer, loginInitialState);
-  const textColor = theme.palette.whiteContainer.main;
   let userDatafor = undefined;
+  const moduleType = getCurrentModuleType();
   if (typeof window !== "undefined") {
     userDatafor = JSON.parse(localStorage.getItem("userDatafor"));
   }
-  const getModule = () => {
-    return JSON.parse(window.localStorage.getItem("module"));
-  };
+
   const loginFormik = useFormik({
     initialValues: {
-      email_or_phone: "",
+      email_or_phone: userDatafor?.email_or_phone || "",
       password: userDatafor ? userDatafor.password : "",
       tandc: false,
     },
@@ -164,7 +144,7 @@ const SignIn = ({
         food_variations: item?.item?.food_variations,
         itemBasePrice: item?.item?.price,
         selectedOption:
-          getModule()?.module_type !== "food"
+          moduleType !== "food"
             ? item?.variation
             : getSelectedVariations(item?.item?.food_variations),
       }));
@@ -177,9 +157,17 @@ const SignIn = ({
     refetch: cartListRefetch,
     isLoading,
   } = useGetAllCartList(cartListSuccessHandler);
+
+  const bookingSuccess = (res) => {
+    dispatch(setCartList(res));
+  };
+  const {
+    data: bookingLists,
+    isLoading: bookingListsIsLoading,
+    refetch: bookingRefetch,
+  } = useGetBookingList(getGuestId(), bookingSuccess);
   const userOnSuccessHandler = (res) => {
     dispatch(setUser(res));
-    //handleClose()
   };
 
   let location = undefined;
@@ -199,9 +187,7 @@ const SignIn = ({
   const passwordHandler = (value) => {
     loginFormik.setFieldValue("password", value);
   };
-  const handleCheckbox = (e) => {
-    loginFormik.setFieldValue("tandc", e.target.checked);
-  };
+
   useEffect(() => {
     if (otpData?.type !== "") {
       setOpenOtpModal(true);
@@ -212,20 +198,23 @@ const SignIn = ({
     setIsApiCalling(false);
   };
 
-  const { data: userData, refetch: profileRefetch } =
-    useGetProfile(userOnSuccessHandler);
-  const { refetch: wishlistRefetch, isLoading: isLoadingWishlist } =
-    useWishListGet(onSuccessHandler);
+  const { refetch: profileRefetch } = useGetProfile(userOnSuccessHandler);
+  const { refetch: wishlistRefetch } = useWishListGet(onSuccessHandler);
+  const { refetch: rentalWishlistRefetch } = useGetWishList(onSuccessHandler);
+
   const handleTokenAfterSignIn = async (response) => {
     if (response) {
       localStorage.setItem("token", response?.token);
-      await wishlistRefetch();
+      if (moduleType === "rental") {
+        await bookingRefetch();
+        await rentalWishlistRefetch();
+      } else {
+        await cartListRefetch();
+        await wishlistRefetch();
+      }
       await profileRefetch();
-      await cartListRefetch();
+
       toast.success(t(loginSuccessFull));
-      // if (location && !isModuleSelected && loginValue?.login_type === "otp") {
-      //   setOpenModuleSelection(true);
-      // }
 
       if (router.pathname === "/forgot-password") {
         router.push("/home");
@@ -234,29 +223,6 @@ const SignIn = ({
     }
   };
 
-  const handleTokenAfterSignUp = async (response) => {
-    if (response) {
-      if (typeof window !== "undefined") {
-        localStorage.setItem("token", response?.token);
-        await profileRefetch();
-        await wishlistRefetch();
-      }
-      toast.success(t(SigninSuccessFull));
-      if (location && !isModuleSelected) {
-        setOpenModuleSelection(true);
-      } else {
-        if (previousRouteName) {
-          router.push("/home");
-        } else if (previousRouteName === "/order") {
-          router.push("/home");
-        } else if (previousRouteName === "/forgot-password") {
-          router.push("/home");
-        } else {
-          await router.back();
-        }
-      }
-    }
-  };
   const handleCloseModuleModal = (item) => {
     if (item) {
       toast.success(t(moduleSelected));
@@ -269,9 +235,6 @@ const SignIn = ({
     setOpenModuleSelection(false);
   };
 
-  const handleError = () => {
-    setIsApiCalling(false);
-  };
   const formSubmitHandler = (values) => {
     const numberOrEmail = checkInput(values?.email_or_phone);
     let newValues = {};
@@ -317,11 +280,6 @@ const SignIn = ({
   const { mutate: fireBaseOtpMutation, isLoading: fireIsLoading } =
     useFireBaseOtpVerify();
 
-  // const onSuccessHandlerOtp = async (res) => {
-  //   toast.success(res?.message);
-  //   setOpenOtpModal(false);
-  //   await handleTokenAfterSignIn(mainToken);
-  // };
   const handleLoginInfo = (res, values) => {
     // Common logic to set login info based on response
     setLoginInfo({
@@ -410,15 +368,6 @@ const SignIn = ({
     getActiveLoginStatus(state, loginDispatch);
   }, [state.activeLoginType]);
 
-  // const handleFormBasedOnDirection = () => (
-  //   <SignInForm
-  //     configData={configData}
-  //     handleOnChange={handleOnChange}
-  //     passwordHandler={passwordHandler}
-  //     loginFormik={loginFormik}
-  //     lanDirection={lanDirection?.direction}
-  //   />
-  // );
   const otpLoginFormik = useFormik({
     initialValues: {
       phone: "",
@@ -490,6 +439,7 @@ const SignIn = ({
               only
               handleSignUp={handleSignUp}
               handleClick={handleClick}
+              handleClose={handleClose }
             />
           </Stack>
         );
@@ -619,6 +569,7 @@ const SignIn = ({
               rememberMeHandleChange={rememberMeHandleChange}
               isLoading={loginIsLoading}
               handleClick={handleClick}
+              handleClose={handleClose}
             />
 
             <Typography fontSize="14px" textAlign="center">
@@ -679,6 +630,7 @@ const SignIn = ({
               rememberMeHandleChange={rememberMeHandleChange}
               isLoading={loginIsLoading}
               handleClick={handleClick}
+              handleClose={handleClose}
             />
             <Stack gap="10px">
               <Typography
@@ -818,12 +770,7 @@ const SignIn = ({
           handleClose={() => setOpenOtpModal(false)}
         />
       </CustomModal>
-      {/*<CustomModal*/}
-      {/*  handleClose={() => setOpenSignUp(false)}*/}
-      {/*  openModal={openSignUp}*/}
-      {/*>*/}
-      {/*  <SignUp configData={configData} />*/}
-      {/*</CustomModal>*/}
+      
     </>
   );
 };

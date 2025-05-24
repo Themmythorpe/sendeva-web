@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from "react";
-import CardActions from "@mui/material/CardActions";
-import CardContent from "@mui/material/CardContent";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { useRouter } from "next/router";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import giftbox from "./assets/giftbox.gif";
 
 import { useTranslation } from "react-i18next";
@@ -12,17 +10,12 @@ import { Stack } from "@mui/material";
 import {
   CustomColouredTypography,
   CustomStackFullWidth,
-} from "../../styled-components/CustomStyles.style";
+} from "styled-components/CustomStyles.style";
 
-import { CustomTypography } from "../landing-page/hero-section/HeroSection.style";
-import { getNumberWithConvertedDecimalPoint } from "../../utils/CustomFunctions";
-import {
-  setCampaignItemList,
-  setClearCart,
-  setRemoveItemFromCart,
-} from "../../redux/slices/cart";
+import { getNumberWithConvertedDecimalPoint } from "utils/CustomFunctions";
+import { setCampaignItemList, setClearCart } from "redux/slices/cart";
 import CustomImageContainer from "../CustomImageContainer";
-import { getCurrentModuleType } from "../../helper-functions/getCurrentModuleType";
+import { getCurrentModuleType } from "helper-functions/getCurrentModuleType";
 import { useTheme } from "@emotion/react";
 const SuccessCard = ({ configData, total, order_id }) => {
   const theme = useTheme();
@@ -89,7 +82,10 @@ const SuccessCard = ({ configData, total, order_id }) => {
         <Typography align="center" sx={{ mb: 1.5 }}>
           {t(`Your order is`)}
           <span
-            style={{ color: theme.palette.primary.main, marginLeft: "3px" }}
+            style={{
+              color: theme.palette.primary.main,
+              marginLeft: "3px",
+            }}
           >
             {order_id}
           </span>
@@ -136,7 +132,9 @@ const SuccessCard = ({ configData, total, order_id }) => {
         <Stack pt="2rem" spacing={1}>
           <Button
             onClick={() =>
-              router.push("/track-order", undefined, { shallow: true })
+              router.push("/track-order", undefined, {
+                shallow: true,
+              })
             }
             variant="contained"
           >

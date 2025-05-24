@@ -24,22 +24,23 @@ import useGetZoneId from "../../../api-manage/hooks/react-query/google-api/useGe
 import useGetPlaceDetails from "../../../api-manage/hooks/react-query/google-api/useGetPlaceDetails";
 import AllowLocationDialog from "../../Map/AllowLocationDialog";
 import CustomMapSearch from "../../Map/CustomMapSearch";
-import MapModal from "../../Map/MapModal";
 import { ModuleSelection } from "./module-selection";
 import { useDispatch } from "react-redux";
-import { module_select_success } from "../../../utils/toasterMessages";
-import { setWishList } from "../../../redux/slices/wishList";
-import { useWishListGet } from "../../../api-manage/hooks/react-query/wish-list/useWishListGet";
-import { getToken } from "../../../helper-functions/getToken";
+import { module_select_success } from "utils/toasterMessages";
+import { setWishList } from "redux/slices/wishList";
+import { useWishListGet } from "api-manage/hooks/react-query/wish-list/useWishListGet";
+import { getToken } from "helper-functions/getToken";
 import { Box } from "@mui/system";
 import GpsFixedIcon from "@mui/icons-material/GpsFixed";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import MapIcon from "@mui/icons-material/Map";
-import { getLanguage } from "../../../helper-functions/getLanguage";
+import { getLanguage } from "helper-functions/getLanguage";
 import SearchIcon from "@mui/icons-material/Search";
 import MapMarkerIcon from "../assets/MapMarkerIcon";
-
+import dynamic from "next/dynamic";
+import { getCurrentModuleType } from "helper-functions/getCurrentModuleType";
+const MapModal = dynamic(() => import("../../Map/MapModal"));
 const HeroLocationForm = () => {
   const theme = useTheme();
   const isXSmall = useMediaQuery(theme.breakpoints.down(600));
@@ -67,8 +68,6 @@ const HeroLocationForm = () => {
     setOpen(false);
   };
   const handleOpen = () => setOpen(true);
-
-  // const dispatch = useDispatch();
 
   //****getting current location/***/
   const { coords, isGeolocationAvailable, isGeolocationEnabled, getPosition } =
@@ -145,7 +144,11 @@ const HeroLocationForm = () => {
 
   useEffect(() => {
     if (places) {
-      setPredictions(places?.predictions);
+      const tempData = places?.suggestions?.map((item) => ({
+        place_id: item.placePrediction.placeId,
+        description: `${item.placePrediction.structuredFormat.mainText.text}, ${item.placePrediction.structuredFormat.secondaryText.text}`,
+      }));
+      setPredictions(tempData);
     }
   }, [places]);
 
@@ -184,11 +187,12 @@ const HeroLocationForm = () => {
   //
   useEffect(() => {
     if (placeDetails) {
-      setLocation(placeDetails?.result?.geometry?.location);
+      setLocation({
+        lat: placeDetails?.location?.latitude,
+        lng: placeDetails?.location?.longitude,
+      });
     }
   }, [placeDetails]);
-
-  // const orangeColor = theme.palette.primary.main;
 
   useEffect(() => {
     if (placeDescription) {
@@ -196,27 +200,22 @@ const HeroLocationForm = () => {
     }
   }, [placeDescription]);
 
-  // get module from localstorage
-  let selectedModule = undefined;
-  if (typeof window !== "undefined") {
-    selectedModule = localStorage.getItem("module");
-  }
+  const moduleType = getCurrentModuleType();
+
   const onSuccessHandler = (response) => {
     dispatch(setWishList(response));
   };
-  const { refetch: wishlistRefetch, isLoading: isLoadingWishlist } =
-    useWishListGet(onSuccessHandler);
+  const { refetch: wishlistRefetch } = useWishListGet(onSuccessHandler);
   const setLocationEnable = async () => {
-    // if (!currentLocation) {
-    //   toast.error(t("Location is required."), {
-    //     id: "id",
-    //   });
-    // }
     setGeoLocationEnable(true);
     setZoneIdEnabled(true);
     if (currentLocation && location) {
       if (getToken()) {
-        wishlistRefetch();
+        if (moduleType === "rental") {
+          await rentalWishlistRefetch();
+        } else {
+          await wishlistRefetch();
+        }
       }
       localStorage.setItem("location", currentLocation);
       localStorage.setItem("currentLatLng", JSON.stringify(location));
@@ -224,11 +223,6 @@ const HeroLocationForm = () => {
 
       toast.success(t("New location has been set."));
       setOpenModuleSelection(true);
-      // if (!selectedModule) {
-      //   setOpenModuleSelection(true);
-      // } else {
-      //   router.push("/home");
-      // }
     } else {
       toast.error(t("Location is required."), {
         id: "id",
@@ -317,7 +311,6 @@ const HeroLocationForm = () => {
                       },
                       position: "relative",
                       cursor: "pointer",
-                      // boxShadow: pickLocation && "1px 0 5px 0 rgba(0, 0, 0, 0.5)",
                       boxShadow:
                         pickLocation && "0px 4px 4px 0px rgba(0, 0, 0, 0.10)",
                       borderRadius: {
@@ -365,10 +358,12 @@ const HeroLocationForm = () => {
                       )}
                       <>
                         {isXSmall ? (
-                          <Stack sx={{
-                            borderRadius: "5px",
-                            backgroundColor: theme.palette.primary.main,
-                          }}>
+                          <Stack
+                            sx={{
+                              borderRadius: "5px",
+                              backgroundColor: theme.palette.primary.main,
+                            }}
+                          >
                             <IconButton
                               disabled={!location?.lat || isLoadingGeoCode}
                               sx={{
@@ -384,7 +379,13 @@ const HeroLocationForm = () => {
                               onClick={() => setLocationEnable()}
                             >
                               <SearchIcon
-                                sx={{ fontSize: "22px", color: (!location?.lat || isLoadingGeoCode) ? theme.palette.neutral[1100] : "white" }}
+                                sx={{
+                                  fontSize: "22px",
+                                  color:
+                                    !location?.lat || isLoadingGeoCode
+                                      ? theme.palette.neutral[1100]
+                                      : "white",
+                                }}
                               />
                             </IconButton>
                           </Stack>

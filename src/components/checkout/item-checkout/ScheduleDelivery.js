@@ -1,29 +1,13 @@
 import React, { useState } from "react";
-import { CustomStackFullWidth } from "../../../styled-components/CustomStyles.style";
+import { CustomStackFullWidth } from "styled-components/CustomStyles.style";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { DateCalendar } from "@mui/x-date-pickers/DateCalendar";
-import { TimePicker } from "@mui/x-date-pickers/TimePicker";
-import dayjs from "dayjs";
-import { CustomDatePicker, CustomTimePicker } from "../CheckOut.style";
-import {
-  FormControlLabel,
-  FormGroup,
-  Input,
-  InputAdornment,
-  styled,
-  Switch,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { CustomDatePicker } from "../CheckOut.style";
+import { styled, Switch, TextField, Typography } from "@mui/material";
 import { Stack } from "@mui/system";
 import { t } from "i18next";
-import { InputLabel } from "@mui/material";
-import { makeStyles } from "@mui/styles";
 import moment from "moment/moment";
-import { getDayNumber } from "../../../utils/CustomFunctions";
-import { useSelector } from "react-redux";
-import { dateAndTimeConverter } from "../../../utils/DateAndTimeConverter";
+import { getDayNumber } from "utils/CustomFunctions";
 
 const TimeInput = styled(TextField)(({ theme }) => ({
   border: "none",
@@ -96,7 +80,6 @@ const MaterialUISwitch = styled(Switch)(({ theme, timeValue }) => ({
 }));
 
 const ScheduleDelivery = ({ customDispatch, scheduleTime, setDayNumber }) => {
-  const { configData } = useSelector((state) => state.configData);
   const [timeValue, setTimeValue] = useState("AM");
   const handleChange = (e) => {
     const input = e.target.value;

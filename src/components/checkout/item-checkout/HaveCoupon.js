@@ -1,32 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { Grid, InputBase } from "@mui/material";
-// import {
-//     CouponButton,
-//     CouponGrid,
-//     CouponTitle,
-//     InputField,
-// } from './CheckOut.style'
+
 import { useQuery } from "react-query";
-// import { CouponApi } from '../../hooks/react-query/config/couponApi'
+
 import { useTranslation } from "react-i18next";
-// import { onErrorResponse } from '../ErrorResponse'
+
 import { toast } from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
-// import { setCouponInfo, setCouponType } from '../../redux/slices/configData'
-// import {
-//     CustomPaperBigCard,
-//     CustomStackFullWidth,
-// } from '../../styled-components/CustomStyles.style'
+
 import { useTheme } from "@mui/material/styles";
-import { CouponApi } from "../../../api-manage/another-formated-api/couponApi";
-import { onErrorResponse } from "../../../api-manage/api-error-response/ErrorResponses";
+import { CouponApi } from "api-manage/another-formated-api/couponApi";
+import { onErrorResponse } from "api-manage/api-error-response/ErrorResponses";
 import { CouponButton, InputField } from "../CheckOut.style";
-import {
-  setCouponInfo,
-  setCouponType,
-} from "../../../redux/slices/profileInfo";
-import { coupon_minimum } from "../../../utils/toasterMessages";
-import { getAmountWithSign } from "../../../helper-functions/CardHelpers";
+import { setCouponInfo, setCouponType } from "redux/slices/profileInfo";
+import { coupon_minimum } from "utils/toasterMessages";
+import { getAmountWithSign } from "helper-functions/CardHelpers";
 import HadCouponBox from "./HadCouponBox";
 
 const HaveCoupon = (props) => {

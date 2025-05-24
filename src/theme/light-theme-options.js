@@ -1,6 +1,7 @@
 // Colors
 
 const neutral = {
+	90: "#FFFFFF1A",
 	100: "#FFFFFF",
 	200: "#E5E7EB",
 	300: "#F6F7FB",

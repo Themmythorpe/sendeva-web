@@ -20,14 +20,13 @@ import {
   setRating_Count,
   setSelectedBrands,
   setSelectedCategories,
-  setStoreSelectedItems,
 } from "redux/slices/categoryIds";
 
 const SearchResult = (props) => {
   const {
     searchValue,
     configData,
-    isSearch,
+
     fromAllCategories,
     fromNav,
     routeTo,
@@ -41,14 +40,11 @@ const SearchResult = (props) => {
   const isSmall = useMediaQuery(theme.breakpoints.down("md"));
   const id = router.query.id;
   const brand_id = router.query.brand_id;
-
   const [currentView, setCurrentView] = useState(0);
-  //const [filterData, setFilterData] = useState([]);
   const [offset, setOffset] = useState(0);
   const [openSideDrawer, setOpenSideDrawer] = useState(false);
   const [filterValue, setFilterValue] = useState([]);
-  //const [rating_count, setRatingCount] = useState(0);
-  const [minMax, setMinMax] = useState([0, 20000]);
+  const [minMax, setMinMax] = useState([0, 20000000]);
   const [type, setType] = useState("all");
   const [category_id, setCategoryId] = useState(id);
   const [sortBy, setSortBy] = useState("");
@@ -58,15 +54,12 @@ const SearchResult = (props) => {
   const { ref, inView } = useInView({
     rootMargin: "0px 0px 38% 0px",
   });
-
   const { selectedBrands, selectedCategories, filterData, rating_count } =
     useSelector((state) => state.categoryIds);
   useEffect(() => {
     dispatch(setSelectedBrands(data_type === "brand" ? [brand_id] : []));
     dispatch(setSelectedCategories(data_type === "category" ? [id] : []));
-    ///dispatch(setStoreSelectedItems(data_type === "category" ? [id] : []));
   }, []);
-
   const page_limit = 12;
 
   const selectedCategoriesHandler = (dataArray) => {
@@ -285,9 +278,6 @@ const SearchResult = (props) => {
   const handleChangeRatings = (value) => {
     dispatch(setRating_Count(value));
   };
-  const getRatingValue = () => {
-    return filterData[filterData.length - 2]?.rating;
-  };
 
   const filterDataAndFunctions = {
     filterData: filterData,
@@ -379,7 +369,6 @@ const SearchResult = (props) => {
             configData={configData}
             currentView={currentView}
             filterData={filterData}
-            //setFilterData={setFilterData}
             selectedCategoriesHandler={selectedCategoriesHandler}
             selectedBrandsHandler={selectedBrandsHandler}
             fromAllCategories={fromAllCategories}
