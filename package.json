@@ -68,7 +68,6 @@
     "yup": "^0.32.11"
   },
   "devDependencies": {
-    "critters": "^0.0.23",
     "prettier": "2.8.0"
   }
 }

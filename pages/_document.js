@@ -8,8 +8,8 @@ class CustomDocument extends Document {
     return (
       <Html lang="en">
         <Head>
-          <link rel="preconnect" href="https://fonts.googleapis.com" crossOrigin="anonymous" />
-          <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+          <link rel="preconnect" href="https://fonts.googleapis.com" />
+          <link rel="preconnect" href="https://fonts.gstatic.com" />
           <link
             href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700&display=swap"
             rel="stylesheet"
@@ -22,31 +22,18 @@ class CustomDocument extends Document {
           {/*  rel="stylesheet"*/}
           {/*  href="https://fonts.googleapis.com/css?family=Roboto+Mono|Roboto+Slab|Roboto:300,400,500,700&display=optional"*/}
           {/*/>*/}
-          <meta name="theme-color" content="#111827" />
-          <meta httpEquiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://accounts.google.com https://appleid.cdn-apple.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https:;" />
-          <meta httpEquiv="X-Content-Type-Options" content="nosniff" />
-          <meta httpEquiv="X-Frame-Options" content="DENY" />
-          <meta httpEquiv="X-XSS-Protection" content="1; mode=block" />
-          <meta httpEquiv="Referrer-Policy" content="strict-origin-when-cross-origin" />
-          <meta httpEquiv="Permissions-Policy" content="camera=(), microphone=(), geolocation=(), interest-cohort=()" />
-          
-          {/* Google Sign-In */}
           <script
             type="application/javascript"
             src="https://accounts.google.com/gsi/client"
             async
-            defer
-            crossOrigin="anonymous"
           />
-          
-          {/* Apple Sign-In */}
           <script
             type="text/javascript"
             src="https://appleid.cdn-apple.com/appleauth/static/jsapi/appleid/1/en_US/appleid.auth.js"
             async
-            defer
-            crossOrigin="anonymous"
           />
+          <meta name="theme-color" content="#111827" />
+
         </Head>
         <body>
           <Main />

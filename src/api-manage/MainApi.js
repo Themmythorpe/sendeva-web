@@ -2,11 +2,6 @@ import axios from "axios";
 export const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 const MainApi = axios.create({
   baseURL: baseUrl,
-  timeout: 10000,
-  headers: {
-    'Content-Type': 'application/json',
-    'Accept': 'application/json',
-  }
 });
 MainApi.interceptors.request.use(function (config) {
   let zoneid = undefined;
@@ -33,15 +28,6 @@ MainApi.interceptors.request.use(function (config) {
   if (hostname) config.headers["origin"] = hostname;
   config.headers["X-software-id"] = software_id;
   config.headers["Accept"] = 'application/json'
-
-  // Add request interceptor for testing
-  if (process.env.NODE_ENV === 'development') {
-    // 30% chance of error
-    if (Math.random() < 0.3) {
-      return Promise.reject(new Error('Simulated API Error'));
-    }
-  }
-
   return config;
 });
 // MainApi.interceptors.response.use(
