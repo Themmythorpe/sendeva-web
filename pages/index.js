@@ -9,6 +9,7 @@ import SEO from "../src/components/seo";
 import useGetLandingPage from "../src/api-manage/hooks/react-query/useGetLandingPage";
 import { useGetConfigData } from "../src/api-manage/hooks/useGetConfigData";
 import { CircularProgress, Box, Typography } from "@mui/material";
+import TestError from "../src/components/TestError";
 
 const Root = (props) => {
 	const { configData, error: initialError } = props;
@@ -119,6 +120,7 @@ const Root = (props) => {
 				title={configData?.business_name}
 				description="add description here"
 			/>
+			{process.env.NODE_ENV === 'development' && <TestError />}
 			{data && dataConfig && (
 				<LandingLayout configData={dataConfig} landingPageData={data}>
 					<LandingPage
