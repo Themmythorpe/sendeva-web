@@ -11,9 +11,10 @@ import { useGetConfigData } from "../src/api-manage/hooks/useGetConfigData";
 import { CircularProgress, Box, Typography } from "@mui/material";
 
 const Root = (props) => {
-	const { configData } = props;
+	const { configData, error: initialError } = props;
 	const [isLoading, setIsLoading] = useState(true);
-	const [error, setError] = useState(null);
+	const [error, setError] = useState(initialError);
+	const [isNavigating, setIsNavigating] = useState(false);
 	
 	const { data, refetch, error: landingPageError } = useGetLandingPage();
 	const dispatch = useDispatch();
@@ -46,16 +47,18 @@ const Root = (props) => {
 			dispatch(setLandingPageData(data));
 		}
 		
-		if (dataConfig) {
+		if (dataConfig && !isNavigating) {
 			if (dataConfig.length === 0) {
-				Router.push("/404");
+				setIsNavigating(true);
+				Router.replace("/404");
 			} else if (dataConfig?.maintenance_mode) {
-				Router.push("/maintainance");
+				setIsNavigating(true);
+				Router.replace("/maintainance");
 			} else {
 				dispatch(setConfigData(dataConfig));
 			}
 		}
-	}, [dataConfig, data, dispatch]);
+	}, [dataConfig, data, dispatch, isNavigating]);
 
 	if (isLoading) {
 		return (
@@ -83,9 +86,24 @@ const Root = (props) => {
 				<Typography variant="h5" color="error" gutterBottom>
 					Something went wrong
 				</Typography>
-				<Typography variant="body1" color="textSecondary">
-					Please try refreshing the page or contact support if the problem persists.
+				<Typography variant="body1" color="textSecondary" gutterBottom>
+					{error.message || "Please try refreshing the page or contact support if the problem persists."}
 				</Typography>
+				<Box mt={2}>
+					<button
+						onClick={() => window.location.reload()}
+						style={{
+							padding: '8px 16px',
+							backgroundColor: '#1976d2',
+							color: 'white',
+							border: 'none',
+							borderRadius: '4px',
+							cursor: 'pointer'
+						}}
+					>
+						Refresh Page
+					</button>
+				</Box>
 			</Box>
 		);
 	}
@@ -157,7 +175,9 @@ export const getServerSideProps = async (context) => {
 		return {
 			props: {
 				configData: null,
-				error: error.message,
+				error: {
+					message: "Unable to load configuration. Please try again later."
+				},
 			},
 		};
 	}
