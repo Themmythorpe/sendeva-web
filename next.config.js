@@ -6,8 +6,8 @@ const nextConfig = {
       "bjorn66.com",
       "6ammart-test.6amdev.xyz",
       "192.168.50.168",
-      "6ammart-dev.6amdev.xyz",
-    ], // Add the domain here
+      "6ammart-dev.6amdev.xyz"
+    ],
   },
   env: {
     NEXT_PUBLIC_BASE_URL: process.env.NEXT_PUBLIC_BASE_URL,
@@ -18,16 +18,6 @@ const nextConfig = {
     NEXT_PUBLIC_SOFTWARE_ID: process.env.NEXT_PUBLIC_SOFTWARE_ID,
   },
   // Ensure environment variables are available at build time
-  webpack: (config, { isServer }) => {
-    if (!isServer) {
-      config.resolve.fallback = {
-        ...config.resolve.fallback,
-        fs: false,
-      };
-    }
-    return config;
-  },
-  // Add static page generation timeout
   staticPageGenerationTimeout: 120,
   // Enable SWC minification
   swcMinify: true,
@@ -63,16 +53,30 @@ const nextConfig = {
   generateEtags: true,
   compress: true,
   // Configure static file generation
-  experimental: {
-    optimizeCss: true,
-    scrollRestoration: true,
-  },
-  // Configure asset prefix for production
   assetPrefix: process.env.NODE_ENV === 'production' ? 'https://sendeva.com' : '',
   // Configure base path
   basePath: '',
   // Configure output
   output: 'standalone',
+  // Configure CSS optimization
+  webpack: (config, { dev, isServer }) => {
+    if (!isServer) {
+      config.resolve.fallback = {
+        ...config.resolve.fallback,
+        fs: false,
+      };
+    }
+    if (!dev && !isServer) {
+      config.optimization = {
+        ...config.optimization,
+        minimize: true,
+        minimizer: [
+          ...config.optimization.minimizer,
+        ],
+      };
+    }
+    return config;
+  },
 };
 
 module.exports = nextConfig;
