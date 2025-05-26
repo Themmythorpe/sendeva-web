@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import AppleLogin from "react-apple-login";
 import { Typography, useMediaQuery, useTheme } from "@mui/material";
 import { useTranslation } from "react-i18next";
+import { appleLoginCredential } from "utils/staticCredential";
 import { CustomGoogleButton } from "components/auth/sign-in/social-login/GoogleLoginComp";
 import CustomImageContainer from "components/CustomImageContainer";
 import appleLogo from "../../asset/Apple Logo.svg";
@@ -26,6 +27,7 @@ const AppleLoginComp = (props) => {
   } = props;
   const theme = useTheme();
   const isSmall = useMediaQuery(theme.breakpoints.down("md"));
+  const credentials = appleLoginCredential;
   const { t } = useTranslation();
   const [appleSdkLoaded, setAppleSdkLoaded] = useState(false);
   const [loginValue, setLoginValue] = useState(null);
