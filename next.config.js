@@ -58,20 +58,9 @@ const nextConfig = {
   output: 'standalone',
   // Configure CSS optimization
   webpack: (config, { dev, isServer }) => {
-    if (!isServer) {
-      config.resolve.fallback = {
-        ...config.resolve.fallback,
-        fs: false,
-      };
-    }
+    // Optimize build
     if (!dev && !isServer) {
-      config.optimization = {
-        ...config.optimization,
-        minimize: true,
-        minimizer: [
-          ...config.optimization.minimizer,
-        ],
-      };
+      config.optimization.minimize = true;
     }
     return config;
   },
@@ -82,10 +71,7 @@ const nextConfig = {
   },
   // Configure static file generation
   experimental: {
-    // Enable static file optimization
-    optimizeCss: true,
-    // Enable static file generation
-    staticPageGenerationTimeout: 120,
+    optimizeCss: false
   },
 };
 
