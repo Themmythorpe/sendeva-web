@@ -27,6 +27,35 @@ const nextConfig = {
     }
     return config;
   },
+  // Add static page generation timeout
+  staticPageGenerationTimeout: 120,
+  // Enable SWC minification
+  swcMinify: true,
+  // Configure trailing slashes
+  trailingSlash: false,
+  // Configure page extensions
+  pageExtensions: ['js', 'jsx', 'ts', 'tsx'],
+  // Configure redirects
+  async redirects() {
+    return [
+      {
+        source: '/',
+        destination: '/',
+        permanent: true,
+      },
+    ];
+  },
+  // Configure rewrites
+  async rewrites() {
+    return {
+      beforeFiles: [
+        {
+          source: '/api/:path*',
+          destination: `${process.env.NEXT_PUBLIC_BASE_URL}/api/:path*`,
+        },
+      ],
+    };
+  },
 };
 
 module.exports = nextConfig;
