@@ -80,6 +80,13 @@ const nextConfig = {
     maxInactiveAge: 25 * 1000,
     pagesBufferLength: 2,
   },
+  // Configure static file generation
+  experimental: {
+    // Enable static file optimization
+    optimizeCss: true,
+    // Enable static file generation
+    staticPageGenerationTimeout: 120,
+  },
 };
 
 module.exports = nextConfig;

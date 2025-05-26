@@ -28,31 +28,6 @@
 [build.processing.images]
   compress = true
 
-[[redirects]]
-  from = "/_next/static/*"
-  to = "/_next/static/:splat"
-  status = 200
-  force = true
-
-[[redirects]]
-  from = "/_next/data/*"
-  to = "/_next/data/:splat"
-  status = 200
-  force = true
-
-[[redirects]]
-  from = "/_next/image/*"
-  to = "/_next/image/:splat"
-  status = 200
-  force = true
-
-[[redirects]]
-  from = "/*"
-  to = "/index.html"
-  status = 200
-  force = true
-  conditions = {Path = ["/_next/static/*", "/_next/data/*", "/_next/image/*"]}
-
 [[headers]]
   for = "/*"
   [headers.values]
@@ -83,4 +58,32 @@
   for = "/_next/data/*"
   [headers.values]
     Cache-Control = "public, max-age=0, must-revalidate"
-    Content-Type = "application/json" 
+    Content-Type = "application/json"
+
+[[redirects]]
+  from = "/_next/static/*"
+  to = "/_next/static/:splat"
+  status = 200
+  force = true
+  headers = {Content-Type = "application/javascript"}
+
+[[redirects]]
+  from = "/_next/static/css/*"
+  to = "/_next/static/css/:splat"
+  status = 200
+  force = true
+  headers = {Content-Type = "text/css"}
+
+[[redirects]]
+  from = "/_next/data/*"
+  to = "/_next/data/:splat"
+  status = 200
+  force = true
+  headers = {Content-Type = "application/json"}
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+  force = true
+  conditions = {Path = ["/_next/static/*", "/_next/data/*", "/_next/image/*"]} 
