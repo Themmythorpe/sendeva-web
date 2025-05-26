@@ -52,8 +52,6 @@ const nextConfig = {
   poweredByHeader: false,
   generateEtags: true,
   compress: true,
-  // Configure static file generation
-  assetPrefix: process.env.NODE_ENV === 'production' ? 'https://sendeva.com' : '',
   // Configure base path
   basePath: '',
   // Configure output
