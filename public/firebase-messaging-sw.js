@@ -6,13 +6,13 @@ importScripts(
 );
 // // Initialize the Firebase app in the service worker by passing the generated config
 const firebaseConfig = {
-  apiKey: "AIzaSyD0Z911mOoWCVkeGdjhIKwWFPRgvd6ZyAw",
-  authDomain: "stackmart-500c7.firebaseapp.com",
-  projectId: "stackmart-500c7",
-  storageBucket: "stackmart-500c7.appspot.com",
-  messagingSenderId: "491987943015",
-  appId: "1:491987943015:web:d8bc7ab8dbc9991c8f1ec2",
-  measurementId: "",
+  apiKey: "AIzaSyB9Oqilt72bXyt7iaGT9Y07C0_yasMe1vs",
+  authDomain: "sendeva-633cd.firebaseapp.com",
+  projectId: "sendeva-633cd",
+  storageBucket: "sendeva-633cd.firebasestorage.app",
+  messagingSenderId: "1065391601456",
+  appId: "1:1065391601456:web:c19f753fdc0622cf29faf5",
+  measurementId: "G-BTQDG2F96H"
 };
 
 firebase?.initializeApp(firebaseConfig);
