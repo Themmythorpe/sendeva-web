@@ -33,12 +33,12 @@ const divider = "#E6E8F0";
 
 const primary = {
 	main: "#7851A9",
-	deep: "#026034",
+	deep: "#06d6ff",
 	light: "#EBFDF2",
 	dark: "#1c6641",
 	semiLight: "#E4FFF3",
 	contrastText: "#FFFFFF",
-	customType1: "#0DCB72",
+	customType1: "#06d6ff",
 	customType2: "#3BB77E",
 	customType3: "#29CE00",
 	overLay: "#000000",
@@ -97,7 +97,7 @@ const error = {
 };
 
 const text = {
-	primary: "#3E594D",
+	primary: "#06d6ff",
 	secondary: "#93A2AE",
 	disabled: "rgba(55, 65, 81, 0.48)",
 	custom: "#3F3F3F",
@@ -110,7 +110,7 @@ const footer = {
 	bottom: "rgba(0, 98, 52, 0.3)",
 	foodBottom: "#686B78",
 	appDownloadButtonBg: "#1A1A1A",
-	appDownloadButtonBgGray: "#3E594D",
+	appDownloadButtonBgGray: "#06d6ff",
 	appDownloadButtonBgHover: "#4f4f4f",
 	foodFooterBg: "#414141",
 };
