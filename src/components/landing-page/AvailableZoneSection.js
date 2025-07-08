@@ -106,7 +106,7 @@ const AvailableZoneSection = ({ landingPageData }) => {
 										borderRadius: "3px",
 									},
 									"&::-webkit-scrollbar-thumb:hover": {
-										backgroundColor: "#003638",
+										backgroundColor: "#06d6ff",
 									},
 								}}
 							>
