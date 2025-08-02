@@ -19,7 +19,7 @@ export const arabic = {
 	Latest: "الأحدث",
 	"However, the maximum cashback amount is":
 		"ومع ذلك، فإن الحد الأقصى لمبلغ الاسترداد النقدي هو",
-	"Welcome to 6amMart!": "ي 6 صباحًا مارت",
+	"Welcome to SendEva!": "ي 6 صباحًا مارت",
 	"Get ready for a special welcome gift, enjoy a special discount on your first order within":
 		"استعد للحصول على " +
 		" هدية ترحيبية خاصة، واستمتع بخصم خاص على طلبك الأول في الداخل",
@@ -942,8 +942,8 @@ export const arabic = {
 	satisfied: "راضي",
 	"some Customer & Restaurant Owners": "بعض أصحاب العملاء والمطاعم",
 	"Become A Seller": "كن بائعًا",
-	"Register as seller and open shop in 6amMart to start your business":
-		"سجل كبائع ومتجر مفتوح في 6Ammart لبدء عملك",
+	"Register as seller and open shop in SendEva to start your business":
+		"سجل كبائع ومتجر مفتوح في SendEva لبدء عملك",
 	"Become A Deliveryman": "تصبح رجل توصيل",
 	"to start your business": "لبدء عملك",
 	"Register as seller and open shop in": "سجل كبائع ومحل مفتوح في",
@@ -1088,8 +1088,8 @@ export const arabic = {
 	"Complete Multipurpose": "كاملة متعددة الأغراض",
 	eBusiness: "Ebusiness",
 	Solution: "حل",
-	"6amMart is a Laravel and Flutter Framework-based multi-vendor food, grocery, eCommerce, parcel, and pharmacy delivery system. It has six modules to cover all your business functionality.":
-		"6Ammart عبارة عن نظام توصيل متعدد البائعين ، والبقالة ، والتجارة الإلكترونية ، والتجارة الإلكترونية ، والتجارة الإلكترونية ، والطرز ، ونظام توصيل الصيدلة ، 6Ammart عبارة عن نظام توصيل الصيدلة ، وتجارة الإلكترون ، والتجارة الإلكترونية ، والطرد ، ونظام توصيل الصيدلة. لديها ست وحدات لتغطية جميع وظائف عملك.",
+	"SendEva is a Laravel and Flutter Framework-based multi-vendor food, grocery, eCommerce, parcel, and pharmacy delivery system. It has six modules to cover all your business functionality.":
+		"SendEva عبارة عن نظام توصيل متعدد البائعين ، والبقالة ، والتجارة الإلكترونية ، والتجارة الإلكترونية ، والتجارة الإلكترونية ، والطرز ، ونظام توصيل الصيدلة ، SendEva عبارة عن نظام توصيل الصيدلة ، وتجارة الإلكترون ، والتجارة الإلكترونية ، والطرد ، ونظام توصيل الصيدلة. لديها ست وحدات لتغطية جميع وظائف عملك.",
 	"Featured Store": "متجر مميز",
 	"Close fullscreen": "إغلاق ملء الشاشة",
 	Fullscreen: "تكبير الشاشة",
@@ -1198,8 +1198,8 @@ export const arabic = {
 		"ادع ومشاركة الكود الخاص بك إلى أصدقائك وأفراد عائلتك",
 	"You made your earning when the order is complete":
 		"لقد قمت بكسبك عند اكتمال الطلب",
-	"They create a account on 6amMart using your code and place their first order":
-		"يقومون بإنشاء حساب على 6Ammart باستخدام الكود الخاص بك ويضعون طلبهم الأول",
+	"They create a account on SendEva using your code and place their first order":
+		"يقومون بإنشاء حساب على SendEva باستخدام الكود الخاص بك ويضعون طلبهم الأول",
 	"They create a account on": "يقومون بإنشاء حساب على",
 	"using your code and place their first order":
 		"باستخدام الكود الخاص بك ووضع طلبهم الأول",

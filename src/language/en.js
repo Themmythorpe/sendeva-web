@@ -17,7 +17,7 @@ export const english = {
 	"prescription is required": "prescription is required",
 	"After completing the order, you will receive a":
 		"After completing the order, you will receive a",
-	"Welcome to 6amMart!": "Welcome to 6amMart!",
+	"Welcome to SendEva!": "Welcome to SendEva!",
 	"Get ready for a special welcome gift, enjoy a special discount on your first order within":
 		"Get ready for a special welcome gift, enjoy a special discount on your first order within",
 	"Start exploring the best services around you.":
@@ -969,8 +969,8 @@ export const english = {
 	satisfied: "satisfied",
 	"some Customer & Restaurant Owners": "some Customer & Restaurant Owners",
 	"Become A Seller": "Become A Seller",
-	"Register as seller and open shop in 6amMart to start your business":
-		"Register as seller and open shop in 6amMart to start your business",
+	"Register as seller and open shop in SendEva to start your business":
+		"Register as seller and open shop in SendEva to start your business",
 	"Become A Deliveryman": "Become A Deliveryman",
 	"to start your business": "to start your business",
 	"Register as seller and open shop in":
@@ -1122,8 +1122,8 @@ export const english = {
 	"Complete Multipurpose": "Complete Multipurpose",
 	eBusiness: "eBusiness",
 	Solution: "Solution",
-	"6amMart is a Laravel and Flutter Framework-based multi-vendor food, grocery, eCommerce, parcel, and pharmacy delivery system. It has six modules to cover all your business functionality.":
-		"6amMart is a Laravel and Flutter Framework-based multi-vendor food, grocery, eCommerce, parcel, and pharmacy delivery system. It has six modules to cover all your business functionality.",
+	"SendEva is a Laravel and Flutter Framework-based multi-vendor food, grocery, eCommerce, parcel, and pharmacy delivery system. It has six modules to cover all your business functionality.":
+		"SendEva is a Laravel and Flutter Framework-based multi-vendor food, grocery, eCommerce, parcel, and pharmacy delivery system. It has six modules to cover all your business functionality.",
 	"Featured Store": "Featured Store",
 	"Close fullscreen": "Close fullscreen",
 	Fullscreen: "Fullscreen",
@@ -1235,8 +1235,8 @@ export const english = {
 		"Invite and share your code to your friends & family members",
 	"You made your earning when the order is complete":
 		"You made your earning when the order is complete",
-	"They create a account on 6amMart using your code and place their first order":
-		"They create a account on 6amMart using your code and place their first order",
+	"They create a account on SendEva using your code and place their first order":
+		"They create a account on SendEva using your code and place their first order",
 	"They create a account on": "They create a account on",
 	"using your code and place their first order":
 		"using your code and place their first order",
