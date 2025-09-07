@@ -3,7 +3,7 @@ import { CalculationGrid, TotalGrid } from "../checkout/CheckOut.style";
 import { Grid, Stack, Typography, useTheme } from "@mui/material";
 import CustomDivider from "../CustomDivider";
 import { t } from "i18next";
-import { getInfoFromZoneData, handleDistance } from "utils/CustomFunctions";
+import { getCalculatedAdditionalChargeForPrescription, getInfoFromZoneData, handleDistance } from "utils/CustomFunctions";
 import {
   getAmountWithSign,
   getReferDiscount,
@@ -109,10 +109,14 @@ const PrescriptionOrderCalculation = ({
       origin,
       destination
     );
+    const calculatedAdditionalCharge = getCalculatedAdditionalChargeForPrescription(
+      configData?.additional_charge,
+      totalOrderAmount
+    );
     const totalAmount =
       (tempDeliveryFee ? tempDeliveryFee : 0) +
       Number(deliveryTip) +
-      configData?.additional_charge;
+      calculatedAdditionalCharge;
     localStorage.setItem("totalAmount", totalAmount);
     return totalAmount;
   };
@@ -138,7 +142,12 @@ const PrescriptionOrderCalculation = ({
             >
               <Typography>{"(+)"}</Typography>
               <Typography>
-                {getAmountWithSign(configData?.additional_charge)}
+                {getAmountWithSign(
+                  getCalculatedAdditionalChargeForPrescription(
+                    configData?.additional_charge,
+                    totalOrderAmount
+                  )
+                )}
               </Typography>
             </Stack>
           </Grid>

@@ -162,9 +162,10 @@ export const getItemDataForAddToCart = (
 };
 export const getPriceAfterQuantityChange = (cart, Quantity) => {
   let mainPrice = 0;
-  const price = cart?.price + getTotalVariationsPrice(cart?.food_variations);
-  //here quantity is incremented with number 1
-  const productPrice = price * Quantity;
+  // Base price multiplied by quantity, plus variant price added only once
+  const basePrice = cart?.price * Quantity;
+  const variantPrice = getTotalVariationsPrice(cart?.food_variations);
+  const productPrice = basePrice + variantPrice;
   mainPrice =
     getCurrentModuleType() === "food"
       ? productPrice

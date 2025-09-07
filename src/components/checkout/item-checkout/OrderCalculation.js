@@ -22,6 +22,7 @@ import { setTotalAmount } from "redux/slices/cart";
 import { CustomStackFullWidth } from "styled-components/CustomStyles.style";
 import {
   bad_weather_fees,
+  getCalculatedAdditionalCharge,
   getCalculatedTotal,
   getCouponDiscount,
   getDeliveryFees,
@@ -343,7 +344,13 @@ const OrderCalculation = (props) => {
               >
                 <Typography>{"(+)"}</Typography>
                 <Typography>
-                  {getAmountWithSign(configData?.additional_charge)}
+                  {getAmountWithSign(
+                    getCalculatedAdditionalCharge(
+                      configData?.additional_charge,
+                      cartList,
+                      storeData
+                    )
+                  )}
                 </Typography>
               </Stack>
             </Grid>

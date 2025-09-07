@@ -200,7 +200,7 @@ const OrderCalculation = ({ data, t, trackOrderData }) => {
             {configData?.additional_charge_name}
           </Typography>
           <Typography fontSize="14px">
-            {trackOrderData && getAmountWithSign(configData?.additional_charge)}
+            {trackOrderData && getAmountWithSign(trackOrderData?.additional_charge)}
           </Typography>
         </CustomStackFullWidth>
       ) : null}

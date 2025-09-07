@@ -19,7 +19,7 @@ import { t } from "i18next";
 import { baseUrl } from "api-manage/MainApi";
 import Router, { useRouter } from "next/router";
 import useGetZoneId from "../../../api-manage/hooks/react-query/google-api/useGetZone";
-import { handleDistance } from "utils/CustomFunctions";
+import { getCalculatedAdditionalChargeForParcel, handleDistance } from "utils/CustomFunctions";
 import useGetVehicleCharge from "../../../api-manage/hooks/react-query/order-place/useGetVehicleCharge";
 import CustomModal from "../../modal";
 import CustomImageContainer from "../../CustomImageContainer";
@@ -486,10 +486,15 @@ const ParcelCheckout = () => {
   const handleClick = () => {
     setSideDrawerOpen(true);
   };
+  const calculatedAdditionalCharge = getCalculatedAdditionalChargeForParcel(
+    configData?.additional_charge,
+    parcelDeliveryFree()
+  );
+  
   const finalTotal = profileInfo?.is_valid_for_discount
     ? parcelDeliveryFree() +
       Number(deliveryTip) +
-      (configData?.additional_charge ? configData?.additional_charge : 0) -
+      calculatedAdditionalCharge -
       getReferDiscount(
         parcelDeliveryFree(),
         profileInfo?.discount_amount,
@@ -497,7 +502,7 @@ const ParcelCheckout = () => {
       )
     : parcelDeliveryFree() +
       Number(deliveryTip) +
-      (configData?.additional_charge ? configData?.additional_charge : 0);
+      calculatedAdditionalCharge;
 
   const getParcelPayment = () => {
     // Check if zoneData and zone_data are available
@@ -525,7 +530,7 @@ const ParcelCheckout = () => {
               total_order_amount={
                 parcelDeliveryFree() +
                 parseFloat(deliveryTip) +
-                configData?.additional_charge
+                calculatedAdditionalCharge
               }
               placeOrder={orderPlace}
               offlinePaymentLoading={offlinePaymentLoading || isLoading}
@@ -620,7 +625,7 @@ const ParcelCheckout = () => {
                             {configData?.additional_charge_name}
                           </Typography>
                           <Typography fontWeight="500">
-                            {getAmountWithSign(configData?.additional_charge)}
+                            {getAmountWithSign(calculatedAdditionalCharge)}
                           </Typography>
                         </Stack>
                       )}
@@ -634,9 +639,7 @@ const ParcelCheckout = () => {
                           {getAmountWithSign(
                             parcelDeliveryFree() +
                               Number(deliveryTip) +
-                              (configData?.additional_charge
-                                ? configData?.additional_charge
-                                : 0)
+                              calculatedAdditionalCharge
                           )}
                         </Typography>
                       </Stack>

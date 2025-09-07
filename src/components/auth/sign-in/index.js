@@ -26,7 +26,7 @@ import { setWishList } from "redux/slices/wishList";
 import {
   checkInput,
   formatPhoneNumber,
-  handleProductValueWithOutDiscount,
+  getItemTotalWithCorrectVariantPricing,
 } from "utils/CustomFunctions";
 import {
   loginSuccessFull,
@@ -138,7 +138,10 @@ const SignIn = ({
         ...item?.item,
         cartItemId: item?.id,
         totalPrice:
-          handleProductValueWithOutDiscount(item?.item) * item?.quantity,
+          getItemTotalWithCorrectVariantPricing({
+            ...item?.item,
+            quantity: item?.quantity
+          }),
         selectedAddons: item?.item?.addons,
         quantity: item?.quantity,
         food_variations: item?.item?.food_variations,

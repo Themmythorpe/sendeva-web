@@ -31,7 +31,7 @@ import { setSelectedModule } from "redux/slices/utils";
 import { setCartList } from "redux/slices/cart";
 import useGetBookingList from "api-manage/hooks/react-query/useGetBookingList";
 import useGetAllCartList from "api-manage/hooks/react-query/add-cart/useGetAllCartList";
-import { handleProductValueWithOutDiscount } from "utils/CustomFunctions";
+import { getItemTotalWithCorrectVariantPricing } from "utils/CustomFunctions";
 import { getSelectedVariations } from "components/header/second-navbar/SecondNavbar";
 import { getGuestId } from "helper-functions/getToken";
 import { getCurrentModuleType } from "helper-functions/getCurrentModuleType";
@@ -118,7 +118,10 @@ export const ModuleSelection = ({
         ...item?.item,
         cartItemId: item?.id,
         totalPrice:
-          handleProductValueWithOutDiscount(item?.item) * item?.quantity,
+          getItemTotalWithCorrectVariantPricing({
+            ...item?.item,
+            quantity: item?.quantity
+          }),
         selectedAddons: item?.item?.addons,
         quantity: item?.quantity,
         food_variations: item?.item?.food_variations,

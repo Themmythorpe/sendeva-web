@@ -183,9 +183,8 @@ export const handlePurchasedAmount = (cartList) => {
     return cartList.reduce(
       (total, product) =>
         (product.food_variations.length > 0
-          ? handleProductValueWithOutDiscount(product)
-          : product.price) *
-          product.quantity +
+          ? getItemTotalWithCorrectVariantPricing(product)
+          : product.price * product.quantity) +
         selectedAddonsTotal(product.selectedAddons) +
         total,
       0
@@ -414,16 +413,15 @@ export const getProductDiscount = (items, storeData) => {
 
       let purchasedAmount = items.reduce(
         (total, product) =>
-          ((product?.food_variations.length > 0
-            ? handleProductValueWithOutDiscount(product)
-            : product?.price) +
-            (product?.selectedAddons?.length > 0
-              ? product?.selectedAddons?.reduce(
-                  (total, addOn) => addOn.price * addOn.quantity + total,
-                  0
-                )
-              : 0)) *
-            product.quantity +
+          (product?.food_variations.length > 0
+            ? getItemTotalWithCorrectVariantPricing(product)
+            : product?.price * product.quantity) +
+          (product?.selectedAddons?.length > 0
+            ? product?.selectedAddons?.reduce(
+                (total, addOn) => addOn.price * addOn.quantity + total,
+                0
+              )
+            : 0) +
           total,
         0
       );
@@ -777,14 +775,20 @@ export const getItemTotalWithoutDiscount = (item) => {
   return item?.price + handleVariationValuesSum(item.food_variations);
 };
 
+export const getItemTotalWithCorrectVariantPricing = (item) => {
+  // Base price multiplied by quantity, plus variant price added only once
+  const basePrice = item?.price * item?.quantity;
+  const variantPrice = handleVariationValuesSum(item.food_variations);
+  return basePrice + variantPrice;
+};
+
 export const getSubTotalPrice = (cartList) => {
   if (getCurrentModuleType() === "food") {
     return cartList.reduce(
       (total, product) =>
         (product?.food_variations.length > 0
-          ? getItemTotalWithoutDiscount(product)
-          : product.price) *
-          product.quantity +
+          ? getItemTotalWithCorrectVariantPricing(product)
+          : product.price * product.quantity) +
         selectedAddonsTotal(product.selectedAddons) +
         total,
       0
@@ -800,6 +804,42 @@ export const getSubTotalPrice = (cartList) => {
       0
     );
   }
+};
+
+export const getCalculatedAdditionalCharge = (additionalCharge, cartList, storeData) => {
+  if (!additionalCharge || additionalCharge <= 0) {
+    return 0;
+  }
+  
+  // Calculate the total item charge (subtotal before discounts)
+  const totalItemCharge = getSubTotalPrice(cartList);
+  
+  // Calculate additional charge as percentage of total item charge
+  const calculatedAdditionalCharge = (totalItemCharge * additionalCharge) / 100;
+  
+  return calculatedAdditionalCharge;
+};
+
+export const getCalculatedAdditionalChargeForPrescription = (additionalCharge, totalOrderAmount) => {
+  if (!additionalCharge || additionalCharge <= 0) {
+    return 0;
+  }
+  
+  // Calculate additional charge as percentage of total order amount
+  const calculatedAdditionalCharge = (totalOrderAmount * additionalCharge) / 100;
+  
+  return calculatedAdditionalCharge;
+};
+
+export const getCalculatedAdditionalChargeForParcel = (additionalCharge, parcelDeliveryFee) => {
+  if (!additionalCharge || additionalCharge <= 0) {
+    return 0;
+  }
+  
+  // Calculate additional charge as percentage of parcel delivery fee
+  const calculatedAdditionalCharge = (parcelDeliveryFee * additionalCharge) / 100;
+  
+  return calculatedAdditionalCharge;
 };
 
 const handleTaxIncludeExclude = (
@@ -840,6 +880,9 @@ export const getCalculatedTotal = (
   packagingCharge,
   referDiscount
 ) => {
+  // Calculate percentage-based additional charge
+  const calculatedAdditionalCharge = getCalculatedAdditionalCharge(additionalCharge, cartList, storeData);
+  
   if (couponDiscount) {
     if (couponDiscount?.coupon_type === "free_delivery") {
       return (
@@ -882,7 +925,7 @@ export const getCalculatedTotal = (
           extraCharge
         ) +
         deliveryTip +
-        additionalCharge +
+        calculatedAdditionalCharge +
         packagingCharge
       );
     }
@@ -911,7 +954,7 @@ export const getCalculatedTotal = (
         extraCharge
       ) +
       deliveryTip +
-      additionalCharge +
+      calculatedAdditionalCharge +
       packagingCharge
     );
   }

@@ -36,7 +36,7 @@ import { setCartList } from "redux/slices/cart";
 import { clearOfflinePaymentInfo } from "redux/slices/offlinePaymentData";
 import LocalShippingOutlinedIcon from "@mui/icons-material/LocalShippingOutlined";
 import { getModule } from "helper-functions/getLanguage";
-import { handleProductValueWithOutDiscount } from "utils/CustomFunctions";
+import { getItemTotalWithCorrectVariantPricing } from "utils/CustomFunctions";
 import useGetGuest from "../../../api-manage/hooks/react-query/guest/useGetGuest";
 import ThemeSwitches from "../top-navbar/ThemeSwitches";
 import CallToAdmin from "../../CallToAdmin";
@@ -295,13 +295,14 @@ const SecondNavBar = ({ configData }) => {
       ...item?.item,
       cartItemId: item?.id,
       totalPrice:
-        handleProductValueWithOutDiscount({
+        getItemTotalWithCorrectVariantPricing({
           ...item?.item,
+          quantity: item?.quantity,
           selectedOption:
             getModule()?.module_type !== "food"
               ? getOtherModuleVariation(item?.item?.variations, item?.variation)
               : [],
-        }) * item?.quantity,
+        }),
       selectedAddons: item?.item?.addons,
       quantity: item?.quantity,
       food_variations: item?.item?.food_variations,
