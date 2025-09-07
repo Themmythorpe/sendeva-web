@@ -27,6 +27,7 @@ import {
   checkInput,
   formatPhoneNumber,
   getItemTotalWithCorrectVariantPricing,
+  handleProductValueWithOutDiscount,
 } from "utils/CustomFunctions";
 import {
   loginSuccessFull,
@@ -138,10 +139,12 @@ const SignIn = ({
         ...item?.item,
         cartItemId: item?.id,
         totalPrice:
-          getItemTotalWithCorrectVariantPricing({
-            ...item?.item,
-            quantity: item?.quantity
-          }),
+          moduleType === "food"
+            ? getItemTotalWithCorrectVariantPricing({
+                ...item?.item,
+                quantity: item?.quantity
+              })
+            : handleProductValueWithOutDiscount(item?.item) * item?.quantity,
         selectedAddons: item?.item?.addons,
         quantity: item?.quantity,
         food_variations: item?.item?.food_variations,

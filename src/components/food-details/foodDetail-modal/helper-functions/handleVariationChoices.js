@@ -27,12 +27,12 @@ export const handleVariationChoices = (
                         setTotalPrice(
                             (prevState) =>
                                 prevState -
-                                Number.parseInt(option.optionPrice) * quantity
+                                Number.parseInt(option.optionPrice)
                         )
                         setVarPrice(
                             (prevPrice) =>
                                 prevPrice -
-                                Number.parseInt(option.optionPrice) * quantity
+                                Number.parseInt(option.optionPrice)
                         )
                     } else {
 
@@ -60,20 +60,16 @@ export const handleVariationChoices = (
                                     prevState -
                                     Number.parseInt(
                                         isItemExistFromSameVariation.optionPrice
-                                    ) *
-                                        quantity +
-                                    Number.parseInt(option.optionPrice) *
-                                        quantity
+                                    ) +
+                                    Number.parseInt(option.optionPrice)
                             )
                             setVarPrice(
                                 (prevPrice) =>
                                     prevPrice -
                                     Number.parseInt(
                                         isItemExistFromSameVariation.optionPrice
-                                    ) *
-                                        quantity +
-                                    Number.parseInt(option.optionPrice) *
-                                        quantity
+                                    ) +
+                                    Number.parseInt(option.optionPrice)
                             )
                         } else {
                             const newObj = {
@@ -87,14 +83,12 @@ export const handleVariationChoices = (
                             setTotalPrice(
                                 (prevState) =>
                                     prevState +
-                                    Number.parseInt(option.optionPrice) *
-                                        quantity
+                                    Number.parseInt(option.optionPrice)
                             )
                             setVarPrice(
                                 (prevPrice) =>
                                     prevPrice +
-                                    Number.parseInt(option.optionPrice) *
-                                        quantity
+                                    Number.parseInt(option.optionPrice)
                             )
                         }
                     }
@@ -111,12 +105,12 @@ export const handleVariationChoices = (
                     setTotalPrice(
                         (prevState) =>
                             prevState +
-                            Number.parseInt(option.optionPrice) * quantity
+                            Number.parseInt(option.optionPrice)
                     )
                     setVarPrice(
                         (prevPrice) =>
                             prevPrice +
-                            Number.parseInt(option.optionPrice) * quantity
+                            Number.parseInt(option.optionPrice)
                     )
                 }
             } else {
@@ -127,12 +121,12 @@ export const handleVariationChoices = (
                 setTotalPrice(
                     (prevState) =>
                         prevState -
-                        Number.parseInt(option.optionPrice) * quantity
+                        Number.parseInt(option.optionPrice)
                 )
                 setVarPrice(
                     (prevPrice) =>
                         prevPrice -
-                        Number.parseInt(option.optionPrice) * quantity
+                        Number.parseInt(option.optionPrice)
                 )
             }
         } else {
@@ -147,12 +141,12 @@ export const handleVariationChoices = (
                 setTotalPrice(
                     (prevState) =>
                         prevState +
-                        Number.parseInt(option.optionPrice) * quantity
+                        Number.parseInt(option.optionPrice)
                 )
                 setVarPrice(
                     (prevPrice) =>
                         prevPrice +
-                        Number.parseInt(option.optionPrice) * quantity
+                        Number.parseInt(option.optionPrice)
                 )
             } else {
                 const filtered = selectedOptions.filter(
@@ -162,12 +156,12 @@ export const handleVariationChoices = (
                 setTotalPrice(
                     (prevState) =>
                         prevState -
-                        Number.parseInt(option.optionPrice) * quantity
+                        Number.parseInt(option.optionPrice)
                 )
                 setVarPrice(
                     (prevPrice) =>
                         prevPrice -
-                        Number.parseInt(option.optionPrice) * quantity
+                        Number.parseInt(option.optionPrice)
                 )
             }
         }
@@ -186,11 +180,11 @@ export const handleVariationChoices = (
 
             setTotalPrice(
                 (prevState) =>
-                    prevState + Number.parseInt(option.optionPrice) * quantity
+                    prevState + Number.parseInt(option.optionPrice)
             )
             setVarPrice(
                 (prevPrice) =>
-                    prevPrice + Number.parseInt(option.optionPrice) * quantity
+                    prevPrice + Number.parseInt(option.optionPrice)
             )
         } else {
             const filtered = selectedOptions.filter(
@@ -200,11 +194,11 @@ export const handleVariationChoices = (
 
             setTotalPrice(
                 (prevState) =>
-                    prevState - Number.parseInt(option.optionPrice) * quantity
+                    prevState - Number.parseInt(option.optionPrice)
             )
             setVarPrice(
                 (prevPrice) =>
-                    prevPrice - Number.parseInt(option.optionPrice) * quantity
+                    prevPrice - Number.parseInt(option.optionPrice)
             )
         }
     }

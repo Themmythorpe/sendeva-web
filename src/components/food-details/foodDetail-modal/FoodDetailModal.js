@@ -718,20 +718,27 @@ const FoodDetailModal = ({
     }
   };
   const handleTotalPrice = () => {
-    let price;
+    let basePrice;
     if (productUpdate) {
       if (modalData.length > 0) {
-        price = modalData?.[0]?.price;
+        basePrice = modalData?.[0]?.price;
       }
     } else {
-      price = product?.price;
+      basePrice = product?.price;
     }
+    
+    // Calculate base price multiplied by quantity
+    const totalBasePrice = basePrice * quantity;
+    
+    // Calculate variant price (added only once, not multiplied by quantity)
+    let variantPrice = 0;
     if (selectedOptions?.length > 0) {
       selectedOptions?.forEach(
-        (item) => (price += Number.parseInt(item?.optionPrice))
+        (item) => (variantPrice += Number.parseInt(item?.optionPrice))
       );
     }
-    setTotalPrice(price * quantity);
+    
+    setTotalPrice(totalBasePrice + variantPrice);
   };
   useEffect(() => {
     if (product) {
