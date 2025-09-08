@@ -19,7 +19,7 @@ import { t } from "i18next";
 import { baseUrl } from "api-manage/MainApi";
 import Router, { useRouter } from "next/router";
 import useGetZoneId from "../../../api-manage/hooks/react-query/google-api/useGetZone";
-import { handleDistance } from "utils/CustomFunctions";
+import { getCalculatedAdditionalChargeForParcel, handleDistance } from "utils/CustomFunctions";
 import useGetVehicleCharge from "../../../api-manage/hooks/react-query/order-place/useGetVehicleCharge";
 import CustomModal from "../../modal";
 import CustomImageContainer from "../../CustomImageContainer";
@@ -78,8 +78,6 @@ const ParcelCheckout = () => {
     lat: parcelInfo?.senderLocations?.lat,
     lng: parcelInfo?.senderLocations?.lng,
   };
-  const [guestUserEmail, setGuestUserEmail] = useState("");
-  const [emailError, setEmailError] = useState("");
   const { data: zoneData } = useGetZoneId(receiverLoacation, zoneIdEnabled);
   const { data, refetch } = useGetDistance(
     parcelInfo?.senderLocations,
@@ -101,14 +99,6 @@ const ParcelCheckout = () => {
         .required(t("Confirm Password"))
         .oneOf([Yup.ref("password"), null], t("Passwords must match")),
     }),
-    // onSubmit: async (values, helpers) => {
-    //   console.log({ values });
-    //   try {
-    //     //formSubmitHandler(values);
-    //   } catch (err) {
-    //     console.log(err);
-    //   }
-    // },
   });
   const passwordHandler = (value) => {
     formik.setFieldValue("password", value);
@@ -117,7 +107,7 @@ const ParcelCheckout = () => {
     formik.setFieldValue("confirm_password", value);
   };
   const tempDistance = handleDistance(
-    data?.rows?.[0]?.elements,
+    data?.data,
     {
       latitude: parcelInfo?.receiverLocations?.latitude,
       longitude: parcelInfo?.receiverLocations?.longitude,
@@ -191,7 +181,7 @@ const ParcelCheckout = () => {
   }, [orderId]);
   const parcelDeliveryFree = () => {
     let convertedDistance = handleDistance(
-      data?.rows[0]?.elements,
+      data,
       parcelInfo?.senderLocations,
       parcelInfo?.receiverLocations
     );
@@ -248,7 +238,7 @@ const ParcelCheckout = () => {
     order_type: "parcel",
     payment_method: isDigital,
     distance: handleDistance(
-      data?.rows[0]?.elements,
+      data?.data,
       parcelInfo?.senderLocations,
       parcelInfo?.receiverLocations
     ),
@@ -288,7 +278,7 @@ const ParcelCheckout = () => {
           if (
             paymentMethod !== "cash_on_delivery" &&
             paymentMethod !== "offline_payment" &&
-            paymentMethod !== ""
+            paymentMethod !== "" && paymentMethod !== "wallet"
           ) {
             const payment_platform = "web";
             const page = "my-orders";
@@ -296,7 +286,6 @@ const ParcelCheckout = () => {
             const callBackUrl = token
               ? `${window.location.origin}/profile?page=${page}`
               : `${window.location.origin}/home`;
-            //const callBackUrl = `${window.location.origin}/order?order_id=${res?.order_id}&total=${res?.total_ammount}`;
             const url = `${baseUrl}/payment-mobile?order_id=${
               res?.order_id
             }&customer_id=${
@@ -497,10 +486,15 @@ const ParcelCheckout = () => {
   const handleClick = () => {
     setSideDrawerOpen(true);
   };
+  const calculatedAdditionalCharge = getCalculatedAdditionalChargeForParcel(
+    configData?.additional_charge,
+    parcelDeliveryFree()
+  );
+  
   const finalTotal = profileInfo?.is_valid_for_discount
     ? parcelDeliveryFree() +
       Number(deliveryTip) +
-      (configData?.additional_charge ? configData?.additional_charge : 0) -
+      calculatedAdditionalCharge -
       getReferDiscount(
         parcelDeliveryFree(),
         profileInfo?.discount_amount,
@@ -508,7 +502,7 @@ const ParcelCheckout = () => {
       )
     : parcelDeliveryFree() +
       Number(deliveryTip) +
-      (configData?.additional_charge ? configData?.additional_charge : 0);
+      calculatedAdditionalCharge;
 
   const getParcelPayment = () => {
     // Check if zoneData and zone_data are available
@@ -536,7 +530,7 @@ const ParcelCheckout = () => {
               total_order_amount={
                 parcelDeliveryFree() +
                 parseFloat(deliveryTip) +
-                configData?.additional_charge
+                calculatedAdditionalCharge
               }
               placeOrder={orderPlace}
               offlinePaymentLoading={offlinePaymentLoading || isLoading}
@@ -631,7 +625,7 @@ const ParcelCheckout = () => {
                             {configData?.additional_charge_name}
                           </Typography>
                           <Typography fontWeight="500">
-                            {getAmountWithSign(configData?.additional_charge)}
+                            {getAmountWithSign(calculatedAdditionalCharge)}
                           </Typography>
                         </Stack>
                       )}
@@ -645,9 +639,7 @@ const ParcelCheckout = () => {
                           {getAmountWithSign(
                             parcelDeliveryFree() +
                               Number(deliveryTip) +
-                              (configData?.additional_charge
-                                ? configData?.additional_charge
-                                : 0)
+                              calculatedAdditionalCharge
                           )}
                         </Typography>
                       </Stack>

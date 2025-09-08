@@ -15,8 +15,6 @@ import {
   setOfflineInfoStep,
   setOfflineMethod,
 } from "redux/slices/offlinePaymentData";
-import { getImageUrl } from "utils/CustomFunctions";
-import configData from "redux/slices/configData";
 
 const PaymentMethodCard = (props) => {
   const {
@@ -37,14 +35,14 @@ const PaymentMethodCard = (props) => {
   const dispatch = useDispatch();
   const isSmall = useMediaQuery(theme.breakpoints.down("md"));
   const handleChange = () => {
-    setPaymentMethod(type);
+    setPaymentMethod?.(type);
     if (!parcel) {
-      setPaymentMethodImage(
+      setPaymentMethodImage?.(
         digitalPaymentMethodActive ? `${image}` : image.src
       );
     }
     dispatch(setOfflineMethod(""));
-    setIsCheckedOffline(false);
+    setIsCheckedOffline?.(false);
     dispatch(setOfflineInfoStep(0));
   };
 

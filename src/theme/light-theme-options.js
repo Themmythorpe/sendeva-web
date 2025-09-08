@@ -1,6 +1,7 @@
 // Colors
 
 const neutral = {
+	90: "#FFFFFF1A",
 	100: "#FFFFFF",
 	200: "#E5E7EB",
 	300: "#F6F7FB",
@@ -31,24 +32,24 @@ const background = {
 const divider = "#E6E8F0";
 
 const primary = {
-	main: "#039D55",
-	deep: "#026034",
+	main: "#7851A9",
+	deep: "#06d6ff",
 	light: "#EBFDF2",
 	dark: "#1c6641",
 	semiLight: "#E4FFF3",
 	contrastText: "#FFFFFF",
-	customType1: "#0DCB72",
+	customType1: "#06d6ff",
 	customType2: "#3BB77E",
 	customType3: "#29CE00",
 	overLay: "#000000",
 	lite: "rgba(3, 157, 85, 0.1)",
-	icon: "#039D55",
+	icon: "#7851A9",
 };
 const moduleTheme = {
-	pharmacy: "#039D55",
-	ecommerce: "#039D55",
-	food: "#039D55",
-	parcel: "#039D55",
+	pharmacy: "#7851A9",
+	ecommerce: "#7851A9",
+	food: "#7851A9",
+	parcel: "#7851A9",
 };
 const horizontalCardBG = "#E4FFF3";
 
@@ -96,7 +97,7 @@ const error = {
 };
 
 const text = {
-	primary: "#3E594D",
+	primary: "#06d6ff",
 	secondary: "#93A2AE",
 	disabled: "rgba(55, 65, 81, 0.48)",
 	custom: "#3F3F3F",
@@ -109,7 +110,7 @@ const footer = {
 	bottom: "rgba(0, 98, 52, 0.3)",
 	foodBottom: "#686B78",
 	appDownloadButtonBg: "#1A1A1A",
-	appDownloadButtonBgGray: "#3E594D",
+	appDownloadButtonBgGray: "#06d6ff",
 	appDownloadButtonBgHover: "#4f4f4f",
 	foodFooterBg: "#414141",
 };

@@ -4,7 +4,7 @@
 }
 
 #nprogress .bar {
-  background: #039D55 !important;
+  background: #7851A9 !important;
 
   position: fixed;
   z-index: 1031;
@@ -19,7 +19,7 @@
 #nprogress .peg {
   display: block;
   position: absolute;
-  right: 0px;
+  right: 0;
   width: 100px;
   height: 100%;
   box-shadow: 0 0 10px #29d, 0 0 5px #29d;

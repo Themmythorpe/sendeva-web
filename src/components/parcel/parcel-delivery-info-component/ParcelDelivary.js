@@ -16,8 +16,8 @@ import ParcelInfo from "./ParcelInfo";
 import ReceiverInfoFrom from "./ReceiverInfoFrom";
 import SenderInfoForm from "./SenderInfoForm";
 import ValidationSchema from "./ValidationSchema";
-import AuthModal from "components/auth/AuthModal";
-
+import dynamic from "next/dynamic";
+const AuthModal = dynamic(() => import("components/auth/AuthModal"));
 const PercelDelivery = ({ configData }) => {
   const router = useRouter();
 
@@ -97,10 +97,6 @@ const PercelDelivery = ({ configData }) => {
       profileInfo?.phone ? profileInfo?.phone : parcelInfo?.senderPhone
     );
   }, [profileInfo?.phone]);
-  // useEffect(() => {
-  //   setReceiverLocation(parcelInfo ? parcelInfo?.receiverLocations : {});
-  //   setSenderLocation(parcelInfo ? parcelInfo?.senderLocations : {});
-  // }, [parcelInfo?.senderLocations, parcelInfo?.receiverLocations]);
 
   const senderNameHandler = (value) => {
     addAddressFormik.setFieldValue("senderName", value);

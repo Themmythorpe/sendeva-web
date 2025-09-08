@@ -111,13 +111,11 @@ const Top = (props) => {
     setOpenReviewModal,
   } = props;
 
-  // const {configData} = useSelector(state=> state.configData)
   const [state, dispatch] = useReducer(reducer, initialState);
   const theme = useTheme();
   const dispatchRedux = useDispatch();
   const isSmall = useMediaQuery(theme.breakpoints.down("md"));
   const { t } = useTranslation();
-  const matches = useMediaQuery("(max-width:1460px)");
   const router = useRouter();
   const ACTION = {
     setViewMap: "setViewMap",
@@ -431,9 +429,7 @@ const Top = (props) => {
                         },
                       }}
                     >
-                      {storeDetails?.positive_rating.toFixed(
-                        configData?.digit_after_decimal_point
-                      )}
+                     {storeDetails?.positive_rating.toFixed(0)}%
                     </Typography>
                     <Stack direction="row" alignItems="center" spacing={0.3}>
                       <Typography
@@ -666,7 +662,6 @@ const Top = (props) => {
               </CustomBoxFullWidth>
               <CustomBoxFullWidth
                 sx={{
-                  // backdropFilter: "blur(10px)",
                   backgroundColor: getModuleWiseBG()?.bgColor,
                   opacity: "0.9",
                   padding: "13.5px 25px",

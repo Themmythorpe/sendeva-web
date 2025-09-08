@@ -1,17 +1,16 @@
 import React, { useState } from "react";
-import PropTypes from "prop-types";
 import { PrimaryButton } from "../Map/map.style";
 import { Stack } from "@mui/system";
 import { useTheme } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
-import { setClearCart } from "../../redux/slices/cart";
+import { setClearCart } from "redux/slices/cart";
 import GuestCheckoutModal from "../cards/GuestCheckoutModal";
-import AuthModal from "components/auth/AuthModal";
-
+import dynamic from "next/dynamic";
+const AuthModal = dynamic(() => import("components/auth/AuthModal"));
 const CartActions = (props) => {
-  const { setSideDrawerOpen, cartList } = props;
+  const { setSideDrawerOpen, cartList, text } = props;
   const { configData } = useSelector((state) => state.configData);
   const token = localStorage.getItem("token");
   const [open, setOpen] = useState(false);
@@ -40,8 +39,8 @@ const CartActions = (props) => {
         setSideDrawerOpen(false);
         router.push("/home", undefined, { shallow: true });
       } else {
-        setSideDrawerOpen(false);
         setOpenAuth(true);
+        // setSideDrawerOpen(false);
         //router.push('/auth/sign-in');
       }
     }
@@ -78,9 +77,15 @@ const CartActions = (props) => {
         fullWidth
         borderRadius="7px"
       >
-        {cartList?.length > 0
-          ? t("Proceed To Checkout")
-          : t("Continue Shopping")}
+        {text ? (
+          text
+        ) : (
+          <>
+            {cartList?.length > 0
+              ? t("Proceed To Checkout")
+              : t("Continue Shopping")}
+          </>
+        )}
       </PrimaryButton>
       {open && (
         <GuestCheckoutModal

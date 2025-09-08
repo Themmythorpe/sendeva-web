@@ -2,7 +2,7 @@ import { useMediaQuery, useTheme } from "@mui/material";
 import { useRouter } from "next/router";
 import PropTypes from "prop-types";
 import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import useGetModule from "../../api-manage/hooks/react-query/useGetModule";
 import { setSelectedModule } from "../../redux/slices/utils";
 import { CustomStackFullWidth } from "../../styled-components/CustomStyles.style";
@@ -10,8 +10,9 @@ import FooterComponent from "../footer";
 import HeaderComponent from "../header";
 import BottomNav from "../header/BottomNav";
 import { MainLayoutRoot } from "./LandingLayout";
+import useGetLandingPage from "api-manage/hooks/react-query/useGetLandingPage";
 
-const MainLayout = ({ children, configData, landingPageData }) => {
+const MainLayout = ({ children, configData }) => {
 	const [rerenderUi, setRerenderUi] = useState(false);
 	const { data, refetch } = useGetModule();
 	const theme = useTheme();
@@ -19,7 +20,6 @@ const MainLayout = ({ children, configData, landingPageData }) => {
 	const router = useRouter();
 	const { page } = router.query;
 	const dispatch = useDispatch();
-
 	useEffect(() => {
 		if (router.pathname === "/home") {
 			refetch();
@@ -42,10 +42,18 @@ const MainLayout = ({ children, configData, landingPageData }) => {
 			}
 		}
 	}
+	const { landingPageData } = useSelector((state) => state.configData);
+	const { data: landing, refetch: landingRefetch } = useGetLandingPage();
+	useEffect(() => {
+		if (!landingPageData) {
+			landingRefetch();
+		}
+	}, []);
+
 	return (
 		<MainLayoutRoot justifyContent="space-between" key={rerenderUi}>
 			<header>
-				<HeaderComponent configData={configData} />
+				<HeaderComponent />
 			</header>
 			<CustomStackFullWidth mt={isSmall ? "3.5rem" : "5.9rem"}>
 				<CustomStackFullWidth sx={{ minHeight: "70vh" }}>
@@ -55,7 +63,7 @@ const MainLayout = ({ children, configData, landingPageData }) => {
 			<footer>
 				<FooterComponent
 					configData={configData}
-					landingPageData={landingPageData}
+					landingPageData={landingPageData ?? landing}
 				/>
 			</footer>
 			{isSmall && page !== "parcel" && <BottomNav />}

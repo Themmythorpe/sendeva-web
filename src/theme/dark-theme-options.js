@@ -40,10 +40,10 @@ const foodCardColor = neutral[800];
 const roundStackOne = "rgba(255, 255, 255, 0.04)";
 const roundStackTwo = "rgba(255, 255, 255, 0.06)";
 const primary = {
-  main: "#039D55",
+  main: "#7851A9",
   light: "#909BEF",
   dark: "#1c6641",
-  deep: "#026034",
+  deep: "#06d6ff",
   contrastText: neutral[900],
   semiLight: "#E4FFF3",
   overLay: "#000000",
@@ -109,7 +109,7 @@ const footer = {
   bottom: "rgba(0, 98, 52, 0.3)",
   foodBottom: "#686B78",
   appDownloadButtonBg: "#1A1A1A",
-  appDownloadButtonBgGray: "#3E594D",
+  appDownloadButtonBgGray: "#06d6ff",
   foodFooterBg: "#414141",
 };
 const customColor = {
