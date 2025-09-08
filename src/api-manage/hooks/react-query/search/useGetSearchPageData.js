@@ -19,11 +19,13 @@ const getSearch = async (pageParams) => {
     pageParam,
   } = pageParams;
   const selectedCategoriesId =
-    selectedCategoriesIds[0] !== "undefined"
+    selectedCategoriesIds && selectedCategoriesIds.length > 0 && selectedCategoriesIds[0] !== "undefined"
       ? JSON.stringify(selectedCategoriesIds)
       : [];
   const selectedBrandId =
-    selectedBrands[0] !== "undefined" ? JSON.stringify(selectedBrands) : [];
+    selectedBrands && selectedBrands.length > 0 && selectedBrands[0] !== "undefined" 
+      ? JSON.stringify(selectedBrands) 
+      : [];
   const tempFilter = filterValue?.length > 0 ? JSON.stringify(filterValue) : [];
 
   const { data } = await MainApi.get(
@@ -56,6 +58,7 @@ export default function useGetSearchPageData(pageParams, handleSuccess) {
     ({ pageParam = 1 }) => getSearch({ ...pageParams, pageParam }),
     {
       getNextPageParam: (lastPage, allPages) => {
+        if (!lastPage || !allPages) return undefined;
         const nextPage = allPages.length + 1;
         return (pageParams?.currentTab === 1
           ? lastPage?.stores?.length

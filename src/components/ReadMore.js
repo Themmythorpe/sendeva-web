@@ -23,7 +23,7 @@ export const ReadMore = ({ children, limits, color }) => {
       }}
     >
       {isReadMore ? text?.slice(0, fontLimits) : text}
-      {text?.length > fontLimits && (
+      {text && text.length > fontLimits && (
         <span
           onClick={toggleReadMore}
           style={{ cursor: "pointer", color: fontColor }}

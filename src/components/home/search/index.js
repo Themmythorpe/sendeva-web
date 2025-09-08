@@ -70,7 +70,7 @@ const SearchResult = (props) => {
   const page_limit = 12;
 
   const selectedCategoriesHandler = (dataArray) => {
-    if (dataArray?.length > 0) {
+    if (dataArray && dataArray.length > 0) {
       setLinkRouteTo("");
       dispatch(setSelectedCategories([...new Set(dataArray)]));
     } else {
@@ -82,7 +82,7 @@ const SearchResult = (props) => {
     if (linkRouteTo === "nav") {
       dispatch(setSelectedBrands([]));
     } else {
-      const filteredArray = dataArray.filter((item) => !isNaN(item));
+      const filteredArray = dataArray && dataArray.length > 0 ? dataArray.filter((item) => !isNaN(item)) : [];
       if (filteredArray.length > 0) {
         dispatch(setSelectedBrands([...new Set(filteredArray)]));
       } else {
@@ -261,9 +261,9 @@ const SearchResult = (props) => {
 
   useEffect(() => {
     const defaultValues = ["default", "fast_delivery", "nearby", "high", "low"];
-    const currentlyCheckedValues = filterData
-      .filter((item) => item.checked)
-      .map((item) => item.value);
+    const currentlyCheckedValues = filterData && filterData.length > 0
+      ? filterData.filter((item) => item.checked).map((item) => item.value)
+      : [];
 
     // Include default values if they exist in the current filterValue
     const updatedFilterValue = [
@@ -286,7 +286,7 @@ const SearchResult = (props) => {
     dispatch(setRating_Count(value));
   };
   const getRatingValue = () => {
-    return filterData[filterData.length - 2]?.rating;
+    return filterData && filterData.length > 2 ? filterData[filterData.length - 2]?.rating : null;
   };
 
   const filterDataAndFunctions = {

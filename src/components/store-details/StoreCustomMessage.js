@@ -26,13 +26,13 @@ const normalStyle = {
 const StoreCustomMessage = ({ storeAnnouncement }) => {
   const theme = useTheme();
   const isSmall = useMediaQuery(theme.breakpoints.down("sm"));
-  let duration = (storeAnnouncement?.length * 24) / 100;
+  let duration = (storeAnnouncement && storeAnnouncement.length ? storeAnnouncement.length * 24 : 0) / 100;
   const translateX = isSmall
-    ? storeAnnouncement?.length * 3.5
-    : storeAnnouncement?.length * 1.3;
+    ? (storeAnnouncement && storeAnnouncement.length ? storeAnnouncement.length * 3.5 : 0)
+    : (storeAnnouncement && storeAnnouncement.length ? storeAnnouncement.length * 1.3 : 0);
   const wordCount = isSmall
-    ? storeAnnouncement?.length > 35
-    : storeAnnouncement?.length > 110;
+    ? (storeAnnouncement && storeAnnouncement.length ? storeAnnouncement.length > 35 : false)
+    : (storeAnnouncement && storeAnnouncement.length ? storeAnnouncement.length > 110 : false);
   // const wordCount = true;
 
   const animatedStyle = {
